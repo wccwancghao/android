@@ -22,13 +22,20 @@ package com.owncloud.android.ui.adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.content.res.Resources;
+import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Color;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.nextcloud.client.preferences.AppPreferences;
@@ -46,11 +53,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import java.util.Set;
 
 /**
  * This Adapter populates a {@link RecyclerView} with all files and directories contained in a local directory
@@ -65,7 +76,7 @@ public class LocalFileListAdapter extends RecyclerView.Adapter<RecyclerView.View
     private List<File> mFiles = new ArrayList<>();
     private List<File> mFilesAll = new ArrayList<>();
     private boolean mLocalFolderPicker;
-    private boolean gridView;
+    private boolean gridView = false;
     private LocalFileListFragmentInterface localFileListFragmentInterface;
     private Set<File> checkedFiles;
 

@@ -419,7 +419,7 @@ public abstract class DrawerActivity extends ToolbarActivity
                         SearchEvent.UnsetType.NO_UNSET), menuItem.getItemId());
                 break;
             case R.id.nav_photos:
-                handleSearchEvents(new SearchEvent("image/%", SearchRemoteOperation.SearchType.CONTENT_TYPE_SEARCH,
+                handleSearchEvents(new SearchEvent("image/%", SearchOperation.SearchType.PHOTO_SEARCH,
                         SearchEvent.UnsetType.NO_UNSET), menuItem.getItemId());
                 break;
             case R.id.nav_on_device:
