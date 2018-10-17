@@ -27,6 +27,9 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -55,12 +58,10 @@ import com.owncloud.android.R;
 import com.owncloud.android.authentication.AccountUtils;
 import com.owncloud.android.datamodel.ArbitraryDataProvider;
 import com.owncloud.android.datamodel.PushConfigurationState;
-import com.owncloud.android.lib.common.UserInfo;
-import com.owncloud.android.lib.common.operations.RemoteOperation;
-import com.owncloud.android.lib.common.operations.RemoteOperationResult;
+import com.owncloud.android.datamodel.UserInfo;
 import com.owncloud.android.lib.common.utils.Log_OC;
-import com.owncloud.android.lib.resources.users.GetRemoteUserInfoOperation;
 import com.owncloud.android.ui.events.TokenPushEvent;
+import com.owncloud.android.ui.viewModel.UserInfoViewModel;
 import com.owncloud.android.utils.DisplayUtils;
 import com.owncloud.android.utils.PushUtils;
 import com.owncloud.android.utils.ThemeUtils;
@@ -119,6 +120,13 @@ public class UserInfoActivity extends FileActivity {
     private UserInfo userInfo;
     private Account account;
 
+    private UserInfoViewModel viewModel;
+
+    // TODO DataBinding
+    // TODO move "controlling" stuff to ViewModel
+
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log_OC.v(TAG, "onCreate() start");
@@ -128,9 +136,19 @@ public class UserInfoActivity extends FileActivity {
 
         account = Parcels.unwrap(bundle.getParcelable(KEY_ACCOUNT));
 
-        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_USER_DATA)) {
-            userInfo = Parcels.unwrap(savedInstanceState.getParcelable(KEY_USER_DATA));
-        }
+//        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_USER_DATA)) {
+//            userInfo = Parcels.unwrap(savedInstanceState.getParcelable(KEY_USER_DATA));
+//        }
+
+
+//        DaggerUserInfoComponent.builder()
+//            .appModule(new AppModule(getApplication()))
+//            .userInfoModule(new UserInfoModule(getApplication()))
+//            .build().inject(this);
+
+        // start with account
+        viewModel = ViewModelProviders.of(this).get(UserInfoViewModel.class);
+        viewModel.init(account);
 
         mCurrentAccountAvatarRadiusDimension = getResources().getDimension(R.dimen.nav_drawer_header_avatar_radius);
 
@@ -148,12 +166,14 @@ public class UserInfoActivity extends FileActivity {
 
         mUserInfoList.setAdapter(new UserInfoAdapter(null, ThemeUtils.primaryColor(getAccount(), true, this)));
 
-        if (userInfo != null) {
-            populateUserInfoUi(userInfo);
-        } else {
-            setMultiListLoadingMessage();
-            fetchAndSetData();
-        }
+        viewModel.getUserInfo().observe(this, this::populateUserInfoUi);
+
+//        if (userInfo != null) {
+//            populateUserInfoUi(userInfo);
+//        } else {
+//            setMultiListLoadingMessage();
+//            fetchAndSetData();
+//        }
 
         setHeaderImage();
     }
@@ -408,26 +428,14 @@ public class UserInfoActivity extends FileActivity {
         }
     }
 
-    private void fetchAndSetData() {
-        Thread t = new Thread(() -> {
-            RemoteOperation getRemoteUserInfoOperation = new GetRemoteUserInfoOperation();
-            RemoteOperationResult result = getRemoteUserInfoOperation.execute(account, this);
+    // TODO error handling if fetch fails
+//} else {
+//    // show error
+//    runOnUiThread(() -> setErrorMessageForMultiList(sorryMessage, result.getLogMessage(),
+//    R.drawable.ic_list_empty_error));
+//    Log_OC.d(TAG, result.getLogMessage());
+//    }
 
-            if (result.isSuccess() && result.getData() != null) {
-                userInfo = (UserInfo) result.getData().get(0);
-
-                runOnUiThread(() -> populateUserInfoUi(userInfo));
-
-            } else {
-                // show error
-                runOnUiThread(() -> setErrorMessageForMultiList(sorryMessage, result.getLogMessage(),
-                        R.drawable.ic_list_empty_error));
-                Log_OC.d(TAG, result.getLogMessage());
-            }
-        });
-
-        t.start();
-    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
