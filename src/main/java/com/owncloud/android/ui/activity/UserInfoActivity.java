@@ -153,7 +153,7 @@ public class UserInfoActivity extends FileActivity {
         setupToolbar(useBackgroundImage);
         updateActionBarTitleAndHomeButtonByString("");
 
-        adapter = new UserInfoAdapter(null, ThemeUtils.primaryColor(getAccount(), true, this));
+        adapter = new UserInfoAdapter(null);
         mUserInfoList.setAdapter(adapter);
 
         viewModel.getUserInfo().observe(this, this::populateUserInfoUi);
@@ -278,6 +278,8 @@ public class UserInfoActivity extends FileActivity {
             R.string.user_info_website);
         addToListIfNeeded(result, R.drawable.ic_twitter, DisplayUtils.beautifyTwitterHandle(userInfo.getTwitter()),
             R.string.user_info_twitter);
+        addToListIfNeeded(result, R.drawable.ic_group, DisplayUtils.beautifyGroups(userInfo.getGroups()),
+            R.string.user_info_groups);
 
         return result;
     }
