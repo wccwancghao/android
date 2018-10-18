@@ -87,6 +87,7 @@ import com.owncloud.android.ui.events.MenuItemClickEvent;
 import com.owncloud.android.ui.events.SearchEvent;
 import com.owncloud.android.ui.fragment.OCFileListFragment;
 import com.owncloud.android.ui.trashbin.TrashbinActivity;
+import com.owncloud.android.ui.viewModel.UserInfoViewModel;
 import com.owncloud.android.utils.DisplayUtils;
 import com.owncloud.android.utils.DrawerMenuUtil;
 import com.owncloud.android.utils.FilesSyncHelper;
@@ -456,7 +457,7 @@ public abstract class DrawerActivity extends ToolbarActivity implements DisplayU
             case R.id.nav_logout:
                 mCheckedMenuItem = -1;
                 menuItem.setChecked(false);
-                UserInfoActivity.openAccountRemovalConfirmationDialog(getAccount(), getSupportFragmentManager(), true);
+                UserInfoViewModel.openAccountRemovalConfirmationDialog(getAccount(), getFragmentManager(), true);
                 break;
             case R.id.drawer_menu_account_add:
                 boolean isProviderOrOwnInstallationVisible = getResources()
