@@ -52,6 +52,7 @@ import com.owncloud.android.R;
 import com.owncloud.android.authentication.AccountUtils;
 import com.owncloud.android.datamodel.UserInfo;
 import com.owncloud.android.lib.common.utils.Log_OC;
+import com.owncloud.android.lib.resources.users.GetRemoteUserInfoOperation;
 import com.owncloud.android.ui.adapter.UserInfoAdapter;
 import com.owncloud.android.ui.components.UserInfoDetailsItem;
 import com.owncloud.android.ui.viewModel.UserInfoViewModel;
@@ -108,6 +109,14 @@ public class UserInfoActivity extends FileActivity {
     protected RecyclerView mUserInfoList;
     @BindView(R.id.empty_list_progress)
     protected ProgressBar multiListProgressBar;
+    @BindView(R.id.userinfo_quota)
+    protected LinearLayout quotaView;
+    @BindView(R.id.userinfo_quota_progressBar)
+    protected ProgressBar quotaProgressBar;
+    @BindView(R.id.userinfo_quota_percentage)
+    protected TextView quotaPercentage;
+    @BindView(R.id.quota_icon)
+    protected ImageView quotaIcon;
 
     @BindString(R.string.user_information_retrieval_error)
     protected String sorryMessage;
@@ -120,6 +129,9 @@ public class UserInfoActivity extends FileActivity {
     private UserInfoAdapter adapter;
     private @ColorRes
     int primaryColor;
+
+
+    // TODO all operations in library: Remote prefix!
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -280,6 +292,17 @@ public class UserInfoActivity extends FileActivity {
             R.string.user_info_twitter);
         addToListIfNeeded(result, R.drawable.ic_group, DisplayUtils.beautifyGroups(userInfo.getGroups()),
             R.string.user_info_groups);
+
+        long quotaValue = userInfo.getQuota().getQuota();
+        if (quotaValue > 0 || quotaValue == GetRemoteUserInfoOperation.SPACE_UNLIMITED
+            || quotaValue == GetRemoteUserInfoOperation.QUOTA_LIMIT_INFO_NOT_AVAILABLE) {
+
+            DisplayUtils.setQuotaInformation(quotaProgressBar, quotaPercentage, userInfo.getQuota(), this);
+            ThemeUtils.tintDrawable(quotaIcon.getDrawable(), primaryColor);
+            quotaView.setVisibility(View.VISIBLE);
+        } else {
+            quotaView.setVisibility(View.GONE);
+        }
 
         return result;
     }
