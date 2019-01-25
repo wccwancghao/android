@@ -101,6 +101,7 @@ public class RenameFileDialogFragment
         // Setup layout
         String currentName = mTargetFile.getFileName();
         EditText inputText = v.findViewById(R.id.user_input);
+        inputText.setHighlightColor(ThemeUtils.primaryColor(getActivity()));
         inputText.setText(currentName);
         ThemeUtils.themeEditText(getContext(), inputText, false);
         int selectionStart = 0;
