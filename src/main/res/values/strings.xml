@@ -876,4 +876,7 @@
     <string name="shared_avatar_desc">Avatar from shared user</string>
     <string name="shared_with_you_by">Shared with you by %1$s</string>
     <string name="reshare_not_allowed">Resharing is not allowed</string>
+    <string name="autoupload_blacklist_pattern">Edit Exclude Patterns</string>
+    <string name="blacklist_editor_exclude_pattern_title">Exclude Pattern</string>
+    <string name="blacklist_editor_exclude_pattern_subtitle">* as wildcard may be used</string>
 </resources>
