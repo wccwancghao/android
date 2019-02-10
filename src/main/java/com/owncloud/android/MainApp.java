@@ -147,7 +147,7 @@ public class MainApp extends MultiDexApplication implements
     @Override
     public void onCreate() {
         preferences = PreferenceManager.fromContext(this);
-        setAppTheme(preferences.getTheme());
+        setAppTheme(preferences.isDarkThemeEnabled());
 
         super.onCreate();
 
