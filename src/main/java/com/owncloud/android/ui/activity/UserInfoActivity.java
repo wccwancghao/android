@@ -24,15 +24,10 @@
 package com.owncloud.android.ui.activity;
 
 import android.accounts.Account;
-import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.StringRes;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -64,14 +59,10 @@ import org.parceler.Parcels;
 import java.util.LinkedList;
 import java.util.List;
 
-import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindString;
 import butterknife.BindView;

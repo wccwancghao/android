@@ -457,7 +457,7 @@ public abstract class DrawerActivity extends ToolbarActivity implements DisplayU
             case R.id.nav_logout:
                 mCheckedMenuItem = -1;
                 menuItem.setChecked(false);
-                UserInfoViewModel.openAccountRemovalConfirmationDialog(getAccount(), getFragmentManager(), true);
+                UserInfoViewModel.openAccountRemovalConfirmationDialog(getAccount(), getSupportFragmentManager(), true);
                 break;
             case R.id.drawer_menu_account_add:
                 boolean isProviderOrOwnInstallationVisible = getResources()
