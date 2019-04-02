@@ -45,7 +45,7 @@ steps:
 
 services:
 - name: server
-  image: nextcloudci/server:server-3
+  image: nextcloudci/server:server-8
 
 trigger:
   branch:
