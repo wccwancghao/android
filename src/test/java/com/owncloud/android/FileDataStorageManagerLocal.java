@@ -31,7 +31,7 @@ public class FileDataStorageManagerLocal implements FileDataStorageManagerInterf
 
     @Override
     public Account getAccount() {
-        throw new IllegalArgumentException("to implement");
+        throw new UnsupportedOperationException("to implement");
     }
 
     @Nullable
@@ -48,12 +48,12 @@ public class FileDataStorageManagerLocal implements FileDataStorageManagerInterf
 
     @Override
     public void saveConflict(OCFile file, String etagInConflict) {
-        throw new IllegalArgumentException("to implement");
+        throw new UnsupportedOperationException("to implement");
     }
 
     @Override
     public void deleteFileInMediaScan(String path) {
-        throw new IllegalArgumentException("to implement");
+        throw new UnsupportedOperationException("to implement");
     }
 
     @Override
@@ -65,77 +65,77 @@ public class FileDataStorageManagerLocal implements FileDataStorageManagerInterf
 
     @Override
     public boolean fileExists(long id) {
-        throw new IllegalArgumentException("to implement");
+        throw new UnsupportedOperationException("to implement");
     }
 
     @Override
     public List<OCFile> getFolderContent(OCFile f, boolean onlyOnDevice) {
-        throw new IllegalArgumentException("to implement");
+        throw new UnsupportedOperationException("to implement");
     }
 
     @Override
     public void saveFolder(OCFile folder, Collection<OCFile> updatedFiles, Collection<OCFile> filesToRemove) {
-        throw new IllegalArgumentException("to implement");
+        throw new UnsupportedOperationException("to implement");
     }
 
     @Override
     public boolean removeFile(OCFile file, boolean removeDBData, boolean removeLocalCopy) {
-        throw new IllegalArgumentException("to implement");
+        throw new UnsupportedOperationException("to implement");
     }
 
     @Override
     public boolean removeFolder(OCFile folder, boolean removeDBData, boolean removeLocalContent) {
-        throw new IllegalArgumentException("to implement");
+        throw new UnsupportedOperationException("to implement");
     }
 
     @Override
     public void moveLocalFile(OCFile file, String targetPath, String targetParentPath) {
-        throw new IllegalArgumentException("to implement");
+        throw new UnsupportedOperationException("to implement");
     }
 
     @Override
     public boolean saveShare(OCShare share) {
-        throw new IllegalArgumentException("to implement");
+        throw new UnsupportedOperationException("to implement");
     }
 
     @Override
     public List<OCShare> getSharesWithForAFile(String filePath, String accountName) {
-        throw new IllegalArgumentException("to implement");
+        throw new UnsupportedOperationException("to implement");
     }
 
     @Override
     public void removeShare(OCShare share) {
-        throw new IllegalArgumentException("to implement");
+        throw new UnsupportedOperationException("to implement");
     }
 
     @Override
     public void copyLocalFile(OCFile file, String targetPath) {
-        throw new IllegalArgumentException("to implement");
+        throw new UnsupportedOperationException("to implement");
     }
 
     @Override
     public OCShare getFirstShareByPathAndType(String path, ShareType type, String shareWith) {
-        throw new IllegalArgumentException("to implement");
+        throw new UnsupportedOperationException("to implement");
     }
 
     @Override
     public OCCapability saveCapabilities(OCCapability capability) {
-        throw new IllegalArgumentException("to implement");
+        throw new UnsupportedOperationException("to implement");
     }
 
     @Override
     public void saveSharesDB(List<OCShare> shares) {
-        throw new IllegalArgumentException("to implement");
+        throw new UnsupportedOperationException("to implement");
     }
 
     @Override
     public void removeSharesForFile(String remotePath) {
-        throw new IllegalArgumentException("to implement");
+        throw new UnsupportedOperationException("to implement");
     }
 
     @Override
     public OCShare getShareById(long id) {
-        throw new IllegalArgumentException("to implement");
+        throw new UnsupportedOperationException("to implement");
     }
 
     public OCFile createOCFile(String path) {
