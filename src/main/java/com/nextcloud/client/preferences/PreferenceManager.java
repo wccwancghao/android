@@ -31,6 +31,13 @@ import com.owncloud.android.ui.activity.PassCodeActivity;
 import com.owncloud.android.ui.activity.SettingsActivity;
 import com.owncloud.android.utils.FileSortOrder;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static com.owncloud.android.ui.activity.SettingsActivity.PreferenceKeys.EXCLUDED_AUTOUPLOAD_PATTEN_DEFAULT_VALUES;
 import static com.owncloud.android.ui.fragment.OCFileListFragment.FOLDER_LAYOUT_LIST;
 
 /**
@@ -66,9 +73,18 @@ public final class PreferenceManager implements AppPreferences {
     private static final String PREF__LOCK_TIMESTAMP = "lock_timestamp";
     private static final String PREF__SHOW_MEDIA_SCAN_NOTIFICATIONS = "show_media_scan_notifications";
     private static final String PREF__LOCK = SettingsActivity.PREFERENCE_LOCK;
+    public static final String EXCLUDED_AUTOUPLOAD_PATTEN_KEY = "EXCLUDED_AUTOUPLOAD_PATTEN_KEY";
+    public static final Set<String> EXCLUDED_AUTOUPLOAD_PATTEN_DEFAULT_VALUES = new HashSet<>();
 
     private final Context context;
     private final SharedPreferences preferences;
+
+    static {
+        String[] SET_VALUES = new String[] {
+            ".thumbdata*"
+        };
+        EXCLUDED_AUTOUPLOAD_PATTEN_DEFAULT_VALUES.addAll(Arrays.asList(SET_VALUES));
+    }
 
     public static AppPreferences fromContext(Context context) {
         Context appContext = context.getApplicationContext();
@@ -426,6 +442,16 @@ public final class PreferenceManager implements AppPreferences {
     @Override
     public void removeKeysMigrationPreference() {
         preferences.edit().remove(PreferenceManager.PREF__KEYS_MIGRATION).commit(); // commit synchronously
+    }
+
+    @Override
+    public void setAutoUploadPatternBlackList(List<String> patternBlackList) {
+        preferences.edit().putStringSet(EXCLUDED_AUTOUPLOAD_PATTEN_KEY, new HashSet<>(patternBlackList)).apply();
+    }
+
+    @Override
+    public List<String> getAutoUploadPatternBlackList() {
+        return new ArrayList<>(preferences.getStringSet(EXCLUDED_AUTOUPLOAD_PATTEN_KEY, EXCLUDED_AUTOUPLOAD_PATTEN_DEFAULT_VALUES));
     }
 
     /**

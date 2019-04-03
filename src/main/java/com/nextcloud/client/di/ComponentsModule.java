@@ -51,6 +51,7 @@ import com.owncloud.android.ui.activity.UploadListActivity;
 import com.owncloud.android.ui.activity.UploadPathActivity;
 import com.owncloud.android.ui.activity.UserInfoActivity;
 import com.owncloud.android.ui.activity.WhatsNewActivity;
+import com.owncloud.android.ui.dialog.PatternBlacklistEditorDialogFragment;
 import com.owncloud.android.ui.errorhandling.ErrorShowActivity;
 import com.owncloud.android.ui.fragment.ExtendedListFragment;
 import com.owncloud.android.ui.fragment.FileDetailFragment;
@@ -109,4 +110,5 @@ abstract class ComponentsModule {
     @ContributesAndroidInjector abstract FileDetailFragment fileDetailFragment();
     @ContributesAndroidInjector abstract LocalFileListFragment localFileListFragment();
     @ContributesAndroidInjector abstract OCFileListFragment ocFileListFragment();
+    @ContributesAndroidInjector abstract PatternBlacklistEditorDialogFragment patternBlacklistEditorDialogFragment();
 }
