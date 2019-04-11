@@ -24,7 +24,6 @@ import com.owncloud.android.datamodel.OCFile;
 import com.owncloud.android.lib.resources.trashbin.model.TrashbinFile;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;

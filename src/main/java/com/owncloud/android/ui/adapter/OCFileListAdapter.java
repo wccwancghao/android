@@ -513,7 +513,8 @@ public class OCFileListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     thumbnailView.setBackgroundColor(mContext.getResources().getColor(R.color.background_color));
                 }
             } else {
-                thumbnailView.setImageDrawable(MimeTypeUtil.getFileTypeIcon(file.getMimeType(), file.getFileName(), mAccount, mContext));
+                thumbnailView.setImageDrawable(MimeTypeUtil.getFileTypeIcon(file.getMimeType(), file.getFileName(),
+                                                                            mAccount, mContext));
             }
         }
     }
@@ -878,7 +879,7 @@ public class OCFileListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 if (!preferences.isShowHiddenFilesEnabled()) {
                     mFiles = filterHiddenFiles(mFiles);
                 }
-                FileSortOrder sortOrder = preferences.getSortOrderByFolder(currentDirectory, null);
+                FileSortOrder sortOrder = preferences.getSortOrderByFolder(currentDirectory);
                 mFiles = sortOrder.sortCloudFiles(mFiles);
             }
 
