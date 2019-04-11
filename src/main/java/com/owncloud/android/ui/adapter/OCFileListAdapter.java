@@ -60,6 +60,7 @@ import com.owncloud.android.lib.resources.files.ReadFileRemoteOperation;
 import com.owncloud.android.lib.resources.files.model.RemoteFile;
 import com.owncloud.android.lib.resources.shares.OCShare;
 import com.owncloud.android.lib.resources.shares.ShareType;
+import com.owncloud.android.lib.resources.status.OwnCloudVersion;
 import com.owncloud.android.operations.RefreshFolderOperation;
 import com.owncloud.android.operations.RemoteOperationFailedException;
 import com.owncloud.android.services.OperationsService;
@@ -82,6 +83,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.Vector;
+
 import androidx.annotation.NonNull;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -123,6 +125,7 @@ public class OCFileListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private List<ThumbnailsCacheManager.ThumbnailGenerationTask> asyncTasks = new ArrayList<>();
     private boolean onlyOnDevice;
+    private boolean showShareAvatar;
 
     public OCFileListAdapter(Context context, AppPreferences preferences, ComponentsGetter transferServiceGetter,
                              OCFileListFragmentInterface ocFileListFragmentInterface, boolean argHideItemOptions,
@@ -143,6 +146,9 @@ public class OCFileListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         AccountManager accountManager = AccountManager.get(mContext);
         userId = accountManager.getUserData(mAccount,
             com.owncloud.android.lib.common.accounts.AccountUtils.Constants.KEY_USER_ID);
+
+        // TODO this may changes when https://github.com/nextcloud/server/pull/14429 is merged
+        showShareAvatar = AccountUtils.getServerVersion(mAccount).isNewerOrEqual(OwnCloudVersion.nextcloud_17);
 
         // initialise thumbnails cache on background thread
         new ThumbnailsCacheManager.InitDiskCacheTask().execute();
@@ -623,9 +629,14 @@ public class OCFileListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (gridViewHolder instanceof OCFileListItemViewHolder || file.getUnreadCommentsCount() == 0) {
             sharedIconView.setVisibility(View.VISIBLE);
 
-            if (file.isSharedWithSharee() | file.isSharedWithMe()) {
-                // TODO check for NC16 (if merged), otherwise still show icon
-                sharedIconView.setVisibility(View.GONE);
+            if (file.isSharedWithSharee() || file.isSharedWithMe()) {
+                if (showShareAvatar) {
+                    sharedIconView.setVisibility(View.GONE);
+                } else {
+                    sharedIconView.setVisibility(View.VISIBLE);
+                    sharedIconView.setImageResource(R.drawable.shared_via_users);
+                    sharedIconView.setContentDescription(mContext.getString(R.string.shared_icon_shared));
+                }
             } else if (file.isSharedViaLink()) {
                 sharedIconView.setImageResource(R.drawable.shared_via_link);
                 sharedIconView.setContentDescription(mContext.getString(R.string.shared_icon_shared_via_link));
@@ -956,8 +967,8 @@ public class OCFileListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         @BindView(R.id.overflow_menu)
         public ImageView overflowMenu;
 
-            @BindView(R.id.sharedAvatars)
-            public RelativeLayout sharedAvatars;
+        @BindView(R.id.sharedAvatars)
+        public RelativeLayout sharedAvatars;
 
         private OCFileListItemViewHolder(View itemView) {
             super(itemView);
