@@ -34,7 +34,7 @@ import android.net.Uri;
 import android.os.RemoteException;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import androidx.annotation.Nullable;
+
 import com.owncloud.android.MainApp;
 import com.owncloud.android.db.ProviderMeta.ProviderTableMeta;
 import com.owncloud.android.lib.common.network.WebdavEntry;
@@ -50,8 +50,6 @@ import com.owncloud.android.operations.RemoteOperationFailedException;
 import com.owncloud.android.utils.FileStorageUtils;
 import com.owncloud.android.utils.MimeType;
 import com.owncloud.android.utils.MimeTypeUtil;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -997,7 +995,7 @@ public class FileDataStorageManager {
 
             String sharees = c.getString(c.getColumnIndex(ProviderTableMeta.FILE_SHAREES));
 
-            if (sharees.isEmpty()) {
+            if (sharees == null || sharees.isEmpty()) {
                 file.setSharees(new ArrayList<>());
             } else {
                 file.setSharees(new ArrayList<>(Arrays.asList(sharees.split(","))));
