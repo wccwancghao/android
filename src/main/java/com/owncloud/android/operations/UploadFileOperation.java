@@ -395,7 +395,7 @@ public class UploadFileOperation extends SyncOperation {
         if (mFolderUnlockToken != null && !mFolderUnlockToken.isEmpty()) {
             UnlockFileRemoteOperation unlockFileOperation = new UnlockFileRemoteOperation(parent.getLocalId(),
                 mFolderUnlockToken);
-            RemoteOperationResult unlockFileOperationResult = unlockFileOperation.execute(client, true);
+            RemoteOperationResult unlockFileOperationResult = unlockFileOperation.execute(client);
 
             if (!unlockFileOperationResult.isSuccess()) {
                 return unlockFileOperationResult;
@@ -449,7 +449,7 @@ public class UploadFileOperation extends SyncOperation {
 
             // Lock folder
             LockFileRemoteOperation lockFileOperation = new LockFileRemoteOperation(parentFile.getLocalId());
-            RemoteOperationResult lockFileOperationResult = lockFileOperation.execute(client, true);
+            RemoteOperationResult lockFileOperationResult = lockFileOperation.execute(client);
 
             if (lockFileOperationResult.isSuccess()) {
                 token = (String) lockFileOperationResult.getData().get(0);
@@ -464,7 +464,7 @@ public class UploadFileOperation extends SyncOperation {
 
             // Update metadata
             GetMetadataRemoteOperation getMetadataOperation = new GetMetadataRemoteOperation(parentFile.getLocalId());
-            RemoteOperationResult getMetadataOperationResult = getMetadataOperation.execute(client, true);
+            RemoteOperationResult getMetadataOperationResult = getMetadataOperation.execute(client);
 
             DecryptedFolderMetadata metadata;
 
@@ -602,7 +602,7 @@ public class UploadFileOperation extends SyncOperation {
                 throw new OperationCancelledException();
             }
 
-            result = mUploadOperation.execute(client, true);
+            result = mUploadOperation.execute(client);
 
             /// move local temporal file or original file to its corresponding
             // location in the Nextcloud local folder
@@ -634,12 +634,12 @@ public class UploadFileOperation extends SyncOperation {
                     // update metadata
                     UpdateMetadataRemoteOperation storeMetadataOperation = new UpdateMetadataRemoteOperation(
                         parentFile.getLocalId(), serializedFolderMetadata, token);
-                    uploadMetadataOperationResult = storeMetadataOperation.execute(client, true);
+                    uploadMetadataOperationResult = storeMetadataOperation.execute(client);
                 } else {
                     // store metadata
                     StoreMetadataRemoteOperation storeMetadataOperation = new StoreMetadataRemoteOperation(
                         parentFile.getLocalId(), serializedFolderMetadata);
-                    uploadMetadataOperationResult = storeMetadataOperation.execute(client, true);
+                    uploadMetadataOperationResult = storeMetadataOperation.execute(client);
                 }
 
                 if (!uploadMetadataOperationResult.isSuccess()) {
@@ -713,7 +713,7 @@ public class UploadFileOperation extends SyncOperation {
 
     private RemoteOperationResult unlockFolder(OCFile parentFolder, OwnCloudClient client, String token) {
         if (token != null) {
-            return new UnlockFileRemoteOperation(parentFolder.getLocalId(), token).execute(client, true);
+            return new UnlockFileRemoteOperation(parentFolder.getLocalId(), token).execute(client);
         } else {
             return new RemoteOperationResult(new Exception("No token available"));
         }
@@ -851,7 +851,7 @@ public class UploadFileOperation extends SyncOperation {
             }
 
             if (result.isSuccess() && mUploadOperation != null) {
-                result = mUploadOperation.execute(client, mFile.isEncrypted());
+                result = mUploadOperation.execute(client);
 
                 /// move local temporal file or original file to its corresponding
                 // location in the Nextcloud local folder
@@ -1015,7 +1015,7 @@ public class UploadFileOperation extends SyncOperation {
      */
     private RemoteOperationResult grantFolderExistence(String pathToGrant, OwnCloudClient client) {
         RemoteOperation operation = new ExistenceCheckRemoteOperation(pathToGrant, false);
-        RemoteOperationResult result = operation.execute(client, true);
+        RemoteOperationResult result = operation.execute(client);
         if (!result.isSuccess() && result.getCode() == ResultCode.FILE_NOT_FOUND && mRemoteFolderToBeCreated) {
             SyncOperation syncOp = new CreateFolderOperation(pathToGrant, true);
             result = syncOp.execute(client, getStorageManager());
@@ -1316,7 +1316,7 @@ public class UploadFileOperation extends SyncOperation {
         }
 
         ReadFileRemoteOperation operation = new ReadFileRemoteOperation(path);
-        RemoteOperationResult result = operation.execute(client, mFile.isEncrypted());
+        RemoteOperationResult result = operation.execute(client);
         if (result.isSuccess()) {
             updateOCFile(file, (RemoteFile) result.getData().get(0));
             file.setLastSyncDateForProperties(syncDate);
