@@ -34,6 +34,7 @@ import android.os.Looper;
 import android.provider.BaseColumns;
 import android.widget.Toast;
 
+import com.nextcloud.client.account.UserAccountManager;
 import com.owncloud.android.R;
 import com.owncloud.android.authentication.AccountUtils;
 import com.owncloud.android.datamodel.FileDataStorageManager;
@@ -53,8 +54,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import dagger.android.AndroidInjection;
 
 
 /**
@@ -89,6 +93,9 @@ public class UsersAndGroupsSearchProvider extends ContentProvider {
 
     private UriMatcher mUriMatcher;
 
+    @Inject
+    protected UserAccountManager accountManager;
+
     private static Map<String, ShareType> sShareTypes = new HashMap<>();
 
     public static ShareType getShareType(String authority) {
@@ -105,6 +112,8 @@ public class UsersAndGroupsSearchProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
+        AndroidInjection.inject(this);
+
         if (getContext() == null) {
             return false;
         }
@@ -168,7 +177,7 @@ public class UsersAndGroupsSearchProvider extends ContentProvider {
 
         // need to trust on the AccountUtils to get the current account since the query in the client side is not
         // directly started by our code, but from SearchView implementation
-        Account account = AccountUtils.getCurrentOwnCloudAccount(getContext());
+        Account account = accountManager.getCurrentAccount();
 
         if (account == null) {
             throw new IllegalArgumentException("Account may not be null!");
